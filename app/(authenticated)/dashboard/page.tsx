@@ -1,4 +1,5 @@
 import LogoutButton from "@/app/components/LogoutButton";
+import Link from "next/link";
 
 export default async function DashboardPage() {
 
@@ -11,6 +12,8 @@ export default async function DashboardPage() {
             <p>
                 Bem-vindo
             </p>
+
+            <Link href="/seasons">Safras</Link>
 
             <LogoutButton />
         </main>
