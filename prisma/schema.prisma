@@ -39,7 +39,7 @@ enum SeasonType {
 
 model Field {
     id        Int      @id @default(autoincrement())
-    name      String
+    name      String   @unique
     area      Decimal
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

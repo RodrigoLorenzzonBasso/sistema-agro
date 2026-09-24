@@ -8,3 +8,6 @@ CREATE TABLE "Field" (
 
     CONSTRAINT "Field_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Field_name_key" ON "Field"("name");

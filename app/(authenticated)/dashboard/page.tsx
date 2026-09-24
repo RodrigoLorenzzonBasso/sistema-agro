@@ -15,6 +15,8 @@ export default async function DashboardPage() {
 
             <Link href="/seasons">Safras</Link>
 
+            <Link href="/fields">Talhões</Link>
+
             <LogoutButton />
         </main>
     );
