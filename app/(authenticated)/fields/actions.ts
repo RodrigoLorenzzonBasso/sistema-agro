@@ -29,8 +29,6 @@ export async function createField(
         });
     } catch (error) {
         return { error: "Erro ao criar talhão.", fields };
-
-        throw error;
     }
 
     redirect("/fields");

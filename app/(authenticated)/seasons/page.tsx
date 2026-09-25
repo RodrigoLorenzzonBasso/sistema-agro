@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deleteSeason } from "./actions";
+import { seasonTypeLabels } from "@/lib/labels";
 
 export default async function SeasonsPage() {
     const seasons = await prisma.season.findMany({
@@ -41,9 +42,7 @@ export default async function SeasonsPage() {
                                     <td>{season.year}</td>
 
                                     <td>
-                                        {season.type === "SUMMER"
-                                            ? "Verão"
-                                            : "Inverno"}
+                                        {seasonTypeLabels[season.type]}
                                     </td>
 
                                     <td>

@@ -1,44 +1,35 @@
 "use server";
 
-import { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { SeasonType } from "@/app/generated/prisma/client";
 import { redirect } from "next/navigation";
 
 export async function createSeason(
-    previousState: { error: string, year: number | "", type: string },
+    previousState: { error: string, fields: { year: number | "", type: string } },
     formData: FormData
-): Promise<{ error: string, year: number | "", type: string }> {
+): Promise<{ error: string, fields: { year: number | "", type: string } }> {
     const year = Number(formData.get("year"));
     const type = formData.get("type")?.toString() || "";
 
+    const fields = { year, type };
+
     if (!year || !type) {
-        return { error: "Ano e período são obrigatórios.", year, type };
+        return { error: "Ano e período são obrigatórios.", fields };
     }
 
-    if (type !== "SUMMER" && type !== "WINTER") {
-        return { error: "Período inválido.", year, type };
+    if (!Object.values(SeasonType).includes(type as SeasonType)) {
+        return { error: "Período inválido.", fields };
     }
 
     try {
         await prisma.season.create({
             data: {
-                year,
-                type,
+                year: year as number,
+                type: type as SeasonType,
             },
         });
     } catch (error) {
-        if (
-            error instanceof Prisma.PrismaClientKnownRequestError &&
-            error.code === "P2002"
-        ) {
-            return {
-                error: "Já existe uma safra cadastrada para esse ano e período.",
-                year,
-                type,
-            };
-        }
-
-        throw error;
+        return { error: "Erro ao criar produto.", fields };  
     }
 
     redirect("/seasons");

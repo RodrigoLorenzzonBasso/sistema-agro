@@ -16,14 +16,7 @@ export default function FieldForm() {
                     Nome
                 </label>
 
-                <input
-                    required
-                    id="name"
-                    name="name"
-                    type="text"
-                    key={state.fields.name}
-                    defaultValue={state.fields.name}
-                />
+                <input required autoComplete="off" id="name" name="name" type="text" key={state.fields.name} defaultValue={state.fields.name}/>
             </div>
 
             <div>

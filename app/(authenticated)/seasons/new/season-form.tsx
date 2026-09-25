@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { createSeason } from "../actions";
+import { seasonTypeLabels } from "@/lib/labels";
 
 export default function SeasonForm() {
-    const [state, formAction, isPending] = useActionState(createSeason, { error: "", year: "", type: "" });
+    const [state, formAction, isPending] = useActionState(createSeason, { error: "", fields: { year: "", type: "" } });
 
     return (
         <form action={formAction}>
@@ -16,13 +17,8 @@ export default function SeasonForm() {
                     Ano
                 </label>
 
-                <input
-                    required
-                    id="year"
-                    name="year"
-                    type="number"
-                    key={state.year}
-                    defaultValue={state.year}
+                <input required id="year" name="year" type="number" key={state.fields.year}
+                    defaultValue={state.fields.year}
                 />
             </div>
 
@@ -31,31 +27,18 @@ export default function SeasonForm() {
                     Período
                 </label>
 
-                <select
-                    required
-                    id="type"
-                    name="type"
-                    key={state.type}
-                    defaultValue={state.type}
-                >
+                <select required id="type" name="type" key={state.fields.type} defaultValue={state.fields.type}>
                     <option value="" disabled>
                         Selecione
                     </option>
 
-                    <option value="SUMMER">
-                        Verão
-                    </option>
-
-                    <option value="WINTER">
-                        Inverno
-                    </option>
+                    {Object.entries(seasonTypeLabels).map(([value, label]) => (
+                        <option key={value} value={value}>{label}</option>
+                    ))}
                 </select>
             </div>
 
-            <button
-                type="submit"
-                disabled={isPending}
-            >
+            <button type="submit" disabled={isPending}>
                 {isPending ? "Salvando..." : "Salvar"}
             </button>
 
