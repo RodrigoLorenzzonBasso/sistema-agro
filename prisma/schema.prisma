@@ -17,11 +17,6 @@ model User {
     updatedAt DateTime @updatedAt
 }
 
-enum Role {
-    ADMIN
-    EMPLOYEE
-}
-
 model Season {
     id        Int        @id @default(autoincrement())
     year      Int
@@ -30,11 +25,6 @@ model Season {
     updatedAt DateTime   @updatedAt
 
     @@unique([year, type])
-}
-
-enum SeasonType {
-    SUMMER
-    WINTER
 }
 
 model Field {
@@ -47,10 +37,43 @@ model Field {
 
 model Product {
     id        Int      @id @default(autoincrement())
-    name      String
+    name      String   @unique
     unit      ProductUnit
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    purchaseItems PurchaseItem[]
+}
+
+model Supplier {
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    purchases Purchase[]
+}
+
+model Purchase {
+    id         Int      @id @default(autoincrement())
+    supplierId Int
+    date       DateTime @default(now())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    supplier Supplier   @relation(fields: [supplierId], references: [id])
+    items    PurchaseItem[]
+}
+
+model PurchaseItem {
+    id         Int     @id @default(autoincrement())
+    purchaseId Int
+    productId  Int
+    quantity   Decimal
+    unitPrice  Decimal
+
+    purchase Purchase @relation(fields: [purchaseId], references: [id])
+    product  Product  @relation(fields: [productId], references: [id])
 }
 
 enum ProductUnit {
@@ -58,4 +81,14 @@ enum ProductUnit {
     KILOGRAM
     TON
     UNIT
+}
+
+enum SeasonType {
+    SUMMER
+    WINTER
+}
+
+enum Role {
+    ADMIN
+    EMPLOYEE
 }
